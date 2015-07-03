@@ -1,0 +1,29 @@
+{
+  "name": "paperkit-grid-behavior",
+  "version": "0.5.0",
+  "authors": [
+    "David María Arribas <dmariaa70@gmail.com>"
+  ],
+  "description": "A behavior providing a grid environment with some packing features for inner elements.",
+  "keywords": [
+    "web-component",
+    "polymer",
+    "paperkit",
+    "behavior",
+    "grid"
+  ],
+  "main": "paperkit-grid-behavior.html",
+  "license": "http://polymer.github.io/LICENSE.txt",
+  "homepage": "https://github.com/<USERNAME>/seed-element/",
+  "ignore": [
+    "/.*",
+    "/test/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.0.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "*"
+  }
+}

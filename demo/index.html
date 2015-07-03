@@ -1,0 +1,36 @@
+<!doctype html>
+<!-- 
+@license
+Copyright (c) The PaperKit Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://http://paperkit.github.io/LICENSE.txt
+The complete set of authors may be found at http://paperkit.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://paperkit.github.io/CONTRIBUTORS.txt
+ -->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>seed-element Demo</title>
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="test-element.html">
+    <style>
+    .box {
+			display: inline-block;
+			border: 1px solid blue;
+		}
+    </style>
+  </head>
+  <body unresolved>
+  	<test-element rows="5" columns="5" layout="vertical" style="width: 500px; height: 500px;">
+	  	<div id="box1" class="box" left="0" top="0" width="1" height="1">BOX1</div>
+			<div id="box2" class="box" left="1" top="0" width="1" height="1">BOX2</div>
+			<div id="box2" class="box" left="2" top="0" width="1" height="1">BOX3</div>
+			<div id="box2" class="box" left="3" top="0" width="1" height="1">BOX4</div>
+			<div id="box2" class="box" left="0" top="0" width="1" height="1">BOX5</div>
+			<div id="box2" class="box" left="1" top="0" width="1" height="1">BOX6</div>
+			<div id="box2" class="box" left="2" top="0" width="1" height="1">BOX7</div>
+			<div id="box2" class="box" left="3" top="0" width="1" height="1">BOX8</div>
+			<div id="box2" class="box" left="4" top="0" width="1" height="1">BOX9</div>
+  	</test-element>
+  </body>
+</html>

@@ -1,0 +1,33 @@
+<!--
+@license
+Copyright (c) The PaperKit Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://http://paperkit.github.io/LICENSE.txt
+The complete set of authors may be found at http://paperkit.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://paperkit.github.io/CONTRIBUTORS.txt
+-->
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../paperkit-grid-behavior.html">
+
+<dom-module id="test-element">
+	<style>
+		:host {
+			display: block;
+			position: relative;
+		}
+	</style>
+	<template>
+		<content select=".box"></content>			
+	</template>
+</dom-module>
+<script>
+Polymer({
+	is: 'test-element',
+	behaviors: [
+		PaperKit.Behaviors.GridBehavior
+	],
+	attached: function() {
+	  this.items = Polymer.dom(Polymer.dom(this.root).querySelector('content')).getDistributedNodes();
+	  this.async(this.refresh,50);
+	}
+});
+</script>

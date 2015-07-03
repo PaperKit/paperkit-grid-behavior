@@ -1,0 +1,159 @@
+<!-- 
+@license
+Copyright (c) The PaperKit Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://http://paperkit.github.io/LICENSE.txt
+The complete set of authors may be found at http://paperkit.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://paperkit.github.io/CONTRIBUTORS.txt
+ -->
+<link rel="import" href="../polymer/polymer.html">
+<script>
+var PaperKit = PaperKit || {
+  Behaviors: { },
+  Tools: { }
+};
+
+PaperKit.Behaviors.GridBehavior = {
+  // Properties
+  properties: {
+    columns: {
+      type: Number,
+      reflectToAttribute: true,
+      value: 5
+    },
+    rows: {
+      type: Number,
+      reflectToAttribute: true,
+      value: 5
+    },
+    layout: {
+      type: String,
+      reflectToAttribute: true,
+      value: 'vertical'
+    },
+    width: {
+      type: Number,
+      value: function() { return this.getBoundingClientRect().width; }
+    },
+    _sortElementsBinding:{
+      type: Function,
+      value: function() { return this._sortElements.bind(this); }
+    }
+  },
+  
+  observers: [
+		'_updateRowsColumns(rows, columns)'
+	],
+  
+  get items() {
+    return this._items || [];
+  },  
+  set items(value) {
+    this._items = value;
+    this._items.forEach(function(item) {
+    	if(!item.left) item.left = Number(item.getAttribute('left'));
+    	if(!item.top) item.top = Number(item.getAttribute('top'));
+    	if(!item.width) item.width = Number(item.getAttribute('width'));
+    	if(!item.height) item.height = Number(item.getAttribute('height'));
+    	item.style.position='absolute';
+    },this);
+  },
+  
+	// Behaviors
+	refresh: function() {
+	  this._computeCellWidth();
+	  this._computeCellHeight();
+		this.items.sort(this._sortElementsBinding);
+		this.items.forEach(this._placeElement, this);
+	},
+	_replaceElement: function(origin, destination) {
+	  var element = this.items.indexOf(origin);
+	  if(element >= 0){
+	    this.items[element] = destination;
+	    destination.left = origin.left;
+	    destination.top = origin.top;
+	    destination.width = origin.width;
+	    destination.height = origin.height;
+			this.refresh();
+	  }
+	},
+	_updateRowsColumns: function() {
+		this.refresh();  
+	},
+	_sortElements: function(item1, item2) {
+	  if(this.layout==='horizontal') {	    
+      if(item1.left != item2.left) {
+        return item1.left - item2.left;
+      }
+      if(item1.top != item2.top) {
+        return item1.top - item2.top;
+      }
+	  } else {
+      if(item1.top != item2.top) {
+        return item1.top - item2.top;
+      }
+      if(item1.left != item2.left) {
+        return item1.left - item2.left;
+      }
+    }
+	},
+	_placeElement: function(item, index) {
+	  // First put element inside of bounds...
+	  if(this.layout=='horizontal') {
+      if(item.top + item.height > this.rows) {
+        item.top = this.rows - item.height;
+      }
+      if(item.top < 0) {
+        item.top = 0;
+      }
+    } else {
+      if(item.left + item.width > this.columns) {
+        item.left = this.columns - item.width;
+      }      
+      if(item.left < 0) {
+        item.left = 0;
+      }      
+    }
+	  
+	  // Now check element position against previously positioned items...
+    var max = 0;    
+    for(var i=0; i<index; i++) {
+      var item2 = this.items[i];
+      
+      if(this.layout=='horizontal') {
+        if(!(item2.top >= item.top + item.height || item2.top + item2.height <= item.top)) {
+          var width = item2.left + item2.width;        
+          max = width > max ? width : max;          
+        }
+      } else {
+        if(!(item2.left >= item.left + item.width || item2.left + item2.width <= item.left)) {
+          var height = item2.top + item2.height;        
+          max = height > max? height : max;
+        }        
+      }
+    }
+    
+    // Set element position...
+    if(this.layout=='horizontal') {
+      item.left = max;
+    } else {
+      item.top = max;
+    }
+    
+    // Now move element...
+    item.style.left = (item.left * this._cellWidth) + "px";
+    item.style.width = (item.width * this._cellWidth) + "px";
+    item.style.top = (item.top * this._cellHeight) + "px";    
+    item.style.height = (item.height * this._cellHeight) + "px";
+	},
+	_computeCellHeight: function() {
+    var height = this.getBoundingClientRect().height;
+    var offsetHeight = this.offsetHeight;
+    var clientHeight = this.clientHeight;
+    this._cellHeight =  height / this.rows;
+  },
+  _computeCellWidth: function() {
+    var width = this.getBoundingClientRect().width; 
+    this._cellWidth = width / this.columns;
+  }
+}
+</script>
